@@ -1,0 +1,19 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     mkkeywordhash
+relocations:
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100001758, symSize: 0x1180 }
+  - { offsetInCU: 0x5A, offset: 0x5A, size: 0x8, addend: 0x0, symName: _nKeyword, symObjAddr: 0x12C8, symBinAddr: 0x100008000, symSize: 0x0 }
+  - { offsetInCU: 0x76, offset: 0x76, size: 0x8, addend: 0x0, symName: _aKeywordTable, symObjAddr: 0x12D0, symBinAddr: 0x100008008, symSize: 0x0 }
+  - { offsetInCU: 0x1AA, offset: 0x1AA, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100001758, symSize: 0x1180 }
+  - { offsetInCU: 0x493, offset: 0x493, size: 0x8, addend: 0x0, symName: _main.cold.1, symObjAddr: 0x1228, symBinAddr: 0x100002980, symSize: 0x28 }
+  - { offsetInCU: 0x4AA, offset: 0x4AA, size: 0x8, addend: 0x0, symName: _keywordCompare1, symObjAddr: 0x1180, symBinAddr: 0x1000028D8, symSize: 0x38 }
+  - { offsetInCU: 0x518, offset: 0x518, size: 0x8, addend: 0x0, symName: _keywordCompare2, symObjAddr: 0x11B8, symBinAddr: 0x100002910, symSize: 0x38 }
+  - { offsetInCU: 0x522, offset: 0x522, size: 0x8, addend: 0x0, symName: _keywordCompare1.cold.1, symObjAddr: 0x1250, symBinAddr: 0x1000029A8, symSize: 0x28 }
+  - { offsetInCU: 0x539, offset: 0x539, size: 0x8, addend: 0x0, symName: _keywordCompare2, symObjAddr: 0x11B8, symBinAddr: 0x100002910, symSize: 0x38 }
+  - { offsetInCU: 0x5A7, offset: 0x5A7, size: 0x8, addend: 0x0, symName: _keywordCompare3, symObjAddr: 0x11F0, symBinAddr: 0x100002948, symSize: 0x38 }
+  - { offsetInCU: 0x5B1, offset: 0x5B1, size: 0x8, addend: 0x0, symName: _keywordCompare2.cold.1, symObjAddr: 0x1278, symBinAddr: 0x1000029D0, symSize: 0x28 }
+  - { offsetInCU: 0x5C8, offset: 0x5C8, size: 0x8, addend: 0x0, symName: _keywordCompare3, symObjAddr: 0x11F0, symBinAddr: 0x100002948, symSize: 0x38 }
+  - { offsetInCU: 0x634, offset: 0x634, size: 0x8, addend: 0x0, symName: _main.cold.1, symObjAddr: 0x1228, symBinAddr: 0x100002980, symSize: 0x28 }
+  - { offsetInCU: 0x63E, offset: 0x63E, size: 0x8, addend: 0x0, symName: _keywordCompare3.cold.1, symObjAddr: 0x12A0, symBinAddr: 0x1000029F8, symSize: 0x28 }
+...

@@ -33,6 +33,7 @@
     "postinstall": "patch-package"
   },
   "types": "src/index.d.ts",
+  "main": "dist/index.js",
   "author": "@Nozbe",
   "homepage": "https://github.com/Nozbe/WatermelonDB#readme",
   "bugs": "https://github.com/Nozbe/WatermelonDB/issues",

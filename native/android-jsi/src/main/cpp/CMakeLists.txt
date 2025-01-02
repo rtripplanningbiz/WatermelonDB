@@ -12,13 +12,13 @@ set(WMELON_JSI_BUMP 4)
 # (surely there's a better way to do this)
 # This has to work with standard RN project, Nozbe's unusual folder structure and internal Watermelon tester
 
-get_filename_component(_nativeTesterPath "../../../../../node_modules/@nozbe/sqlite/" REALPATH)
+get_filename_component(_nativeTesterPath "../../../../../../node_modules/@nozbe/sqlite/" REALPATH)
 get_filename_component(_nozbePath "../../../../../../../../../native/node_modules/react-native/ReactCommon/jsi/jsi/" REALPATH)
 
 if(EXISTS "${_nativeTesterPath}")
         # these paths work for WatermelonDB native tester
-        set(NODE_MODULES_PATH_WM ../../../../../node_modules/)
-        set(NODE_MODULES_PATH_RN ../../../../../node_modules/)
+        set(NODE_MODULES_PATH_WM ../../../../../../node_modules/)
+        set(NODE_MODULES_PATH_RN ../../../../../../node_modules/)
 elseif(EXISTS "${_nozbePath}")
         # these paths work for Nozbe
         set(NODE_MODULES_PATH_WM ../../../../../../../)

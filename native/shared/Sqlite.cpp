@@ -25,22 +25,37 @@ SqliteDb::SqliteDb(std::string path, const char *password) {
 #endif
 
     auto resolvedPath = resolveDatabasePath(path);
+    
+#ifdef SQLITE_HAS_CODEC
+    // For SQLCipher, we need to use sqlite3_open_v2 with SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE
+    int flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
+    int openResult = sqlite3_open_v2(resolvedPath.c_str(), &sqlite, flags, nullptr);
+#else
     int openResult = sqlite3_open(resolvedPath.c_str(), &sqlite);
+#endif
 
     if (openResult != SQLITE_OK) {
         if (sqlite) {
             auto error = std::string(sqlite3_errmsg(sqlite));
             throw new std::runtime_error("Error while trying to open database - " + error);
         } else {
-            // whoa, sqlite couldn't allocate memory
             throw new std::runtime_error("Error while trying to open database, sqlite is null - " + std::to_string(openResult));
         }
     }
     assert(sqlite != nullptr);
+
 #ifdef SQLITE_HAS_CODEC
     if (password != nullptr && strlen(password) > 0) {
         consoleLog("##### Will set key...");
-        sqlite3_key(sqlite, password, (int)strlen(password));
+        // Set the encryption key
+        if (sqlite3_key(sqlite, password, (int)strlen(password)) != SQLITE_OK) {
+            consoleError("Failed to set database key - " + std::string(sqlite3_errmsg(sqlite)));
+            sqlite3_close(sqlite);
+            sqlite = nullptr;
+            throw new std::runtime_error("Failed to set database key - " + std::string(sqlite3_errmsg(sqlite)));
+        }
+        
+        // Verify the key works
         int rc = sqlite3_exec(sqlite, "SELECT count(*) FROM sqlite_master;", NULL, NULL, NULL);
         if (rc != SQLITE_OK) {
             consoleError("Failed to open encrypted database - " + std::string(sqlite3_errmsg(sqlite)));
@@ -48,10 +63,10 @@ SqliteDb::SqliteDb(std::string path, const char *password) {
             sqlite = nullptr;
             throw new std::runtime_error("Failed to open encrypted database - " + std::string(sqlite3_errmsg(sqlite)));
         }
-        consoleLog("##### Key set!");
+        consoleLog("##### Key set successfully!");
     }
 #endif
-    assert(sqlite != nullptr);
+
     consoleLog("Opened database at " + resolvedPath);
 }
 

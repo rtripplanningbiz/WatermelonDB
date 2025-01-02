@@ -11,29 +11,30 @@ Database::Database(jsi::Runtime *runtime, std::string path, std::string password
 
     std::string initSql = "";
 
-// FIXME: On Android, Watermelon often errors out on large batches with an IO error, because it
-// can't find a temp store... I tried setting sqlite3_temp_directory to /tmp/something, but that
-// didn't work. Setting temp_store to memory seems to fix the issue, but causes a significant
-// slowdown, at least on iOS (not confirmed on Android). Worth investigating if the slowdown is
-// also present on Android, and if so, investigate the root cause. Perhaps we need to set the temp
-// directory by interacting with JNI and finding a path within the app's sandbox?
+#ifdef SQLITE_HAS_CODEC
+    // SQLCipher initialization - must be done before any other PRAGMA
+    if (!password.empty()) {
+        initSql += "PRAGMA key = '" + password + "';";
+        initSql += "PRAGMA cipher_page_size = 4096;";
+        initSql += "PRAGMA kdf_iter = 64000;";
+        initSql += "PRAGMA cipher_memory_security = ON;";
+        initSql += "PRAGMA cipher_default_use_hmac = ON;";
+        initSql += "PRAGMA cipher_compatibility = 4;";
+    }
+#endif
+
 #ifdef ANDROID
     initSql += "pragma temp_store = memory;";
 #endif
 
     initSql += "pragma journal_mode = WAL;";
-
-    // set timeout before SQLITE_BUSY error is returned
     initSql += "pragma busy_timeout = 5000;";
 
 #ifdef ANDROID
-    // NOTE: This was added in an attempt to fix mysterious `database disk image is malformed` issue when using
-    // headless JS services
-    // NOTE: This slows things down
     initSql += "pragma synchronous = FULL;";
 #endif
+
     if (usesExclusiveLocking) {
-        // this seems to fix the headless JS service issue but breaks if you have multiple readers
         initSql += "pragma locking_mode = EXCLUSIVE;";
     }
 
